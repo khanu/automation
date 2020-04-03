@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Image list</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+	<a href="/garbage_collect" id="logo">Home</a>
+	<style>
+	       #logo { position: absolute; right: 30px; top: 10px; width: 190px; height: 190px; }
+
+		form {
+            text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <form action="/remove" method="POST">
+            <h1>Please select the oldest image you would like to keep for {{ image_name }}</h1>
+            <p>All older images will be removed</p>	    
+            <label for="image_name"></label>  
+            <input type="text" id="image_name" name="image_name" value={{ image_name }} readonly>
+            <select name= selected_version>
+                {% for image in image_list %}
+                     <option value= "{{ image.decode('utf-8')  }}" SELECTED>{{ image.decode('utf-8') }}</option>"
+                {% endfor %}
+            </select>
+            <input type="submit" value="Submit" class="myButton">
+        </form>    
+        <script src="" async defer></script>
+    </body>
+</html>
+

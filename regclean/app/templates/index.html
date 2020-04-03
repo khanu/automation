@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Docker Registry Cleanup</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+        <!-- <h2>Enter the docker image info</h2> -->
+            <!-- {% if error %}
+                <p class=error><strong>Error:</strong> {{ error }}
+            {% endif %} -->
+    <body>
+        <form action="/images" method=get>
+          <label for="image_name">Image name:</label><br>
+          <input type="text" id="image_name" name="image_name" value=""><br>
+          <input type="submit" value="Submit">
+        </form>
+
+        <script src="" async defer></script>
+    </body>
+</html>

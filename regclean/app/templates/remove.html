@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>These images will be removed</title>
+        <meta name="Please confirm" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+	<a href="/garbage_collect" id="logo">Home</a>
+        <style>
+          #logo { position: absolute; right: 30px; top: 10px; width: 190px; height: 190px; }
+
+            table, th, td {
+              border: 1px solid black;
+            }
+	    form {
+	    text-align: center;
+	     }
+        </style>
+    </head>
+    <body>
+        <form action="/delete" method="POST">
+            <h1>Please confirm if the following versions of can be removed</h1>
+            <h2 name="image_name">{{ image_name }}</h2>
+            <input type="hidden" name="image_name" value="{{ image_name }}" />
+        <table  align="center">
+            <tr>
+                <th>Tag Name</th>
+            </tr>
+            {% for image in images_for_removal %}
+                <tr>
+                    <td name="image" align="center">{{image}}</td>
+                    <input type="hidden" name="image" value="{{ image }}" />
+                </tr>
+            {% endfor %}
+        </table>
+            <button type="submit" value="Submit">Submit</button>
+            <button type="button" class="btn btn-primary" onclick="window.history.back();">Cancel</button>
+          
+        <script src="" async defer></script>
+        </form>
+    </body>
+</html>

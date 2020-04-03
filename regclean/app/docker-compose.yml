@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+
+  regclean:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - "/docker-registry/dti_registry/docker/registry/v2/repositories:/app/registry"

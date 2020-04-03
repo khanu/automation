@@ -1,0 +1,68 @@
+#!/usr/bin/python
+
+import sys
+import os.path
+import subprocess
+from flask import Flask, render_template, request
+# from app import app
+
+app = Flask(__name__)
+
+directory = '/app/registry/'
+
+@app.route("/")
+@app.route("/index")
+def index():
+    return 'Flask is running!'
+
+@app.route('/garbage_collect', methods=['GET', 'POST'])
+def garbage_collect():
+	error = None
+	image_list = []
+	project = request.form.get("image_name")
+	# print(project)
+	return render_template('index.html', project = project)
+
+@app.errorhandler(Exception)
+def all_exception_handler(error):
+   return 'Oops!\nNothing Found', 500
+
+@app.route('/images', methods=['GET'])
+def show_images():
+	project = request.args.get("image_name")
+	if os.path.isdir(os.path.join(directory, str(project))):
+		cmd = "find '{0}'/'{1}'/_manifests/tags/ -type d -printf \"%P\n\" |cut -d'/' -f 1 | uniq | sort | sed '/^$/d'".format(str(directory), str(project))
+
+		try:
+			sp = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+			output = sp.communicate()[0]
+
+		except Exception as ex:
+			template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+			message = template.format(type(ex).__name__, ex.args)
+			print(message)
+
+		image_list = output.splitlines()
+		return render_template('images.html', image_list = image_list, project = project)
+
+@app.route('/remove', methods=['GET', 'POST'])
+def remove_images():
+	project = request.form.get("project")
+	oldest_to_keep = request.form.get("image_list")
+	if os.path.isdir(os.path.join(directory, str(project), '_manifests/tags/', str(oldest_to_keep))):
+		cmd = "find '{0}'/'{1}'/_manifests/tags/ -type d ! -newer '{2}'/'{3}'/_manifests/tags/'{4}' -printf \"%P\n\" |grep -v ^latest|grep -v '{5}' |cut -d'/' -f 1 | uniq | sed '/\^\$/d'" .format(str(directory), str(project), str(directory), str(project), str(oldest_to_keep), str(oldest_to_keep))
+
+		try:
+			sp = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+			output = sp.communicate()[0]
+
+		except Exception as ex:
+			template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+			message = template.format(type(ex).__name__, ex.args)
+			print(message)
+
+	images_for_removal = output.splitlines()
+	return render_template('remove.html', images_for_removal = images_for_removal)
+
+if __name__== '__main__':
+    app.run(host= '0.0.0.0')
